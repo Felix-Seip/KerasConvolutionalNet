@@ -11,8 +11,14 @@ imageWidth          = 100
 numConvFilters      = 32
 maxPoolingPoolSize  = (2, 2)
 
-if os.path.isfile('testfile.txt'):
-    model = NNModelSaver.loadModel('testfile.txt')
+print('Would you like to load the model from a .h5 file? Y/N')
+loadFileAnswer = input()
+
+if loadFileAnswer.upper() == 'Y':
+
+    fileToLoad = input()
+    if os.path.isfile(fileToLoad):
+        model = NNModelSaver.loadModel(fileToLoad )
 
 else:
     model = CNNClassifier()
@@ -23,8 +29,6 @@ else:
     model.createOutputLayer()
     model.compile()
     
-    
-    
     train_datagen = ImageDataGenerator(rescale = 1./255,
                                        shear_range = 0.2,
                                        zoom_range = 0.2,
@@ -32,12 +36,16 @@ else:
     
     test_datagen = ImageDataGenerator(rescale = 1./255)
     
-    training_set = train_datagen.flow_from_directory('training_set',
+    print('Please specify the directory for the training set:')
+    trainingSetDir = input()
+    training_set = train_datagen.flow_from_directory(trainingSetDir,
                                                      target_size = (100, 100),
                                                      batch_size = 32,
                                                      class_mode = 'binary') #to make multi-class change binary to categorical
     
-    test_set = test_datagen.flow_from_directory('test_set',
+    print('Please specify the directory for the test set:')
+    testSetDir = input()
+    test_set = test_datagen.flow_from_directory(testSetDir,
                                                 target_size = (100, 100),
                                                 batch_size = 32,
                                                 class_mode = 'binary') #to make multi-class change binary to categorical
@@ -48,6 +56,10 @@ else:
                              validation_data = test_set,
                              validation_steps = 50)
 
-model.makeModelPrediction('C:\\Users\\SeipF\\source\\repos\\AnimalSpeciesClassifier\\AnimalSpeciesClassifier\\dataset\\single_prediction\\cat_or_dog_1.jpg', training_set)
+print('Please enter file path to an image that you would like to classify:')
+fileToClassify = input()
+model.makeModelPrediction(fileToClassify, training_set)
 
-NNModelSaver.saveModel(model.cnnModel, 'testfile.txt')
+print('Where should the file be saved to?')
+fileToSaveModel = input()
+NNModelSaver.saveModel(model.cnnModel, fileToSaveModel)
