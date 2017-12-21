@@ -1,6 +1,7 @@
 from keras.models import Sequential
-
 from keras.models import model_from_json
+
+from h5py import *
 
 class NNModelSaver(object):
     """description of class"""
