@@ -5,3 +5,20 @@ This project requires the following python packages to be installed on the syste
 - TensorFlow (Either CPU or GPU)
 - Keras
 - h5py
+
+The structure of the dataset should be as follows:
+- test_set
+  - class1
+    - img1
+	- img2
+	- imgN
+  - class2
+  - classN
+  
+- training_set
+  - class1
+    - img1
+	- img2
+	- imgN
+  - class2
+  - classN

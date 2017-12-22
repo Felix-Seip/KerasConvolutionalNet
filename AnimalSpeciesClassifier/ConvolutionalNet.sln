@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AnimalSpeciesClassifier", "AnimalSpeciesClassifier\AnimalSpeciesClassifier.pyproj", "{50C738F3-A88A-48B5-A02F-A3B7C1B566D3}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "KerasConvNet", "AnimalSpeciesClassifier\KerasConvNet.pyproj", "{50C738F3-A88A-48B5-A02F-A3B7C1B566D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
