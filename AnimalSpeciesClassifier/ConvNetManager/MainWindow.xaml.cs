@@ -22,12 +22,9 @@ namespace ConvNetManager
         public MainWindow()
         {
             InitializeComponent();
-
-            StartConvNetScript();
             server = new NamedPipeServerStream("Demo");
             stream = new MemoryStream();
             writer = new BinaryWriter(stream);
-            server.WaitForConnection();
         }
 
         private void StartConvNetScript()
@@ -89,13 +86,25 @@ namespace ConvNetManager
             await server.ReadAsync(responseBytes, 0, responseBytes.Length);
             string responseString = Encoding.UTF8.GetString(responseBytes);
             string response = responseString.Substring(0, responseString.IndexOf("\0"));
-            input.Text = response;
+            ProcessResponse(response);
         }
 
-        private void Send_Btn_Click(object sender, RoutedEventArgs e)
+        private void ProcessResponse(string response)
         {
-            writer.Write(input.Text);
-            server.Write(stream.ToArray(), 0, stream.ToArray().Length);
+            string[] responseType = response.Split(':');
+            if(responseType[0] == "Status")
+            {
+                ConnectionStatus.Content = responseType[1];
+            }
+        }
+
+        //writer.Write(input.Text);
+        //server.Write(stream.ToArray(), 0, stream.ToArray().Length);
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            StartConvNetScript();
+            server.WaitForConnection();
             GetResponseAsync();
         }
     }

@@ -14,7 +14,7 @@ numConvFilters      = 32        #To be handled from interface
 maxPoolingPoolSize  = (2, 2)    #To be handled from interface
 
 fileHandle = winAPI.CreateFile("\\\\.\\pipe\\Demo", winAPI.GENERIC_READ | winAPI.GENERIC_WRITE, 0, 0, winAPI.OPEN_EXISTING, 0, 0)
-
+winAPI.WriteFile(fileHandle, b'Status:Starting Network...', 0)
 
 #print('Would you like to load the model from a .h5 file? Y/N') #To be handled from interface
 loadFileAnswer = sys.argv[1] #input()
