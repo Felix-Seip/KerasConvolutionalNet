@@ -73,7 +73,7 @@ class CNNClassifier(object):
         result = self.cnnModel.predict(test_image)
         training_set.class_indices
 
-        print(result[i])
+        print(result[0])
 
 
 

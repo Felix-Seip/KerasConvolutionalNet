@@ -2,20 +2,25 @@
 from keras.preprocessing.image import ImageDataGenerator
 from CNNClassifier import CNNClassifier
 from NNModelSaver import NNModelSaver
+from InterfaceConnectionManager import InterfaceConnectionManager
 import os
 import sys
 
-numImageChannels    = 3
-kernelSize          = 3
-imageHeight         = 100
-imageWidth          = 100
-numConvFilters      = 32
-maxPoolingPoolSize  = (2, 2)
+numImageChannels    = 3         #To be handled from interface
+kernelSize          = 3         #To be handled from interface
+imageHeight         = 100       #To be handled from interface
+imageWidth          = 100       #To be handled from interface
+numConvFilters      = 32        #To be handled from interface
+maxPoolingPoolSize  = (2, 2)    #To be handled from interface
+fileHandle          = None
 
-print('Would you like to load the model from a .h5 file? Y/N')
-loadFileAnswer = input()
+fileHandle = InterfaceConnectionManager.initializeConnection()
+InterfaceConnectionManager.sendMessage(fileHandle, b'Status:Connected')
 
-if loadFileAnswer.upper() == 'Y':
+#print('Would you like to load the model from a .h5 file? Y/N') #To be handled from interface
+loadFileAnswer = sys.argv[1] #input()
+
+if loadFileAnswer.upper() == 'Y': 
 
     fileToLoad = input()
     if os.path.isfile(fileToLoad):
@@ -37,15 +42,15 @@ else:
     
     test_datagen = ImageDataGenerator(rescale = 1./255)
     
-    print('Please specify the directory for the training set:')
-    trainingSetDir = input()
+    #print('Please specify the directory for the training set:')#To be handled from interface
+    trainingSetDir = sys.argv[2] #input()
     training_set = train_datagen.flow_from_directory(trainingSetDir,
                                                      target_size = (100, 100),
                                                      batch_size = 32,
                                                      class_mode = 'categorical') #to make multi-class change binary to categorical
     
-    print('Please specify the directory for the test set:')
-    testSetDir = input()
+    #print('Please specify the directory for the test set:')#To be handled from interface
+    testSetDir = sys.argv[3] #input()
     test_set = test_datagen.flow_from_directory(testSetDir,
                                                 target_size = (100, 100),
                                                 batch_size = 32,
@@ -61,8 +66,12 @@ else:
 #fileToSaveModel = input()
 #NNModelSaver.saveModel(model.cnnModel, fileToSaveModel)
 
+
 while True:
-    print('Please enter file path to an image that you would like to classify:')
-    fileToClassify = input()
-    model.makeModelPrediction(fileToClassify, training_set)
-    sys.stdout.flush()
+    data = InterfaceConnectionManager.readMessage(fileHandle)
+    print(data)
+    #if os.path.exists(data):
+    #    model.makeModelPrediction(data, training_set)
+    #    winAPI.WriteFile(fileHandle, bytes(data), 0)
+    #else:
+    InterfaceConnectionManager.sendMessage(fileHandle, b'Hello World')

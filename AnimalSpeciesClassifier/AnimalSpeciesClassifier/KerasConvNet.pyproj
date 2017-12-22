@@ -26,6 +26,9 @@
     <Compile Include="CNNClassifier.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="InterfaceConnectionManager.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NNModelSaver.py">
       <SubType>Code</SubType>
     </Compile>
