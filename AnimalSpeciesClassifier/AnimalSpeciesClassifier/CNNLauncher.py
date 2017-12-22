@@ -15,8 +15,8 @@ maxPoolingPoolSize  = (2, 2)    #To be handled from interface
 
 
 
-print('Would you like to load the model from a .h5 file? Y/N') #To be handled from interface
-loadFileAnswer = input()
+#print('Would you like to load the model from a .h5 file? Y/N') #To be handled from interface
+loadFileAnswer = sys.argv[1] #input()
 
 if loadFileAnswer.upper() == 'Y': 
 
@@ -40,15 +40,15 @@ else:
     
     test_datagen = ImageDataGenerator(rescale = 1./255)
     
-    print('Please specify the directory for the training set:')#To be handled from interface
-    trainingSetDir = input()
+    #print('Please specify the directory for the training set:')#To be handled from interface
+    trainingSetDir = sys.argv[2] #input()
     training_set = train_datagen.flow_from_directory(trainingSetDir,
                                                      target_size = (100, 100),
                                                      batch_size = 32,
                                                      class_mode = 'categorical') #to make multi-class change binary to categorical
     
-    print('Please specify the directory for the test set:')#To be handled from interface
-    testSetDir = input()
+    #print('Please specify the directory for the test set:')#To be handled from interface
+    testSetDir = sys.argv[3] #input()
     test_set = test_datagen.flow_from_directory(testSetDir,
                                                 target_size = (100, 100),
                                                 batch_size = 32,
@@ -64,7 +64,13 @@ else:
 #fileToSaveModel = input()
 #NNModelSaver.saveModel(model.cnnModel, fileToSaveModel)
 
+fileHandle = winAPI.CreateFile("\\\\.\\pipe\\Demo", winAPI.GENERIC_READ | winAPI.GENERIC_WRITE, 0, 0, winAPI.OPEN_EXISTING, 0, 0)
+
 while True:
-    print('Please enter file path to an image that you would like to classify:') #To be handled from interface
-    fileToClassify = input()
-    model.makeModelPrediction(fileToClassify, training_set)
+    data = winAPI.ReadFile(fileHandle, 4096)
+    print(data)
+    if os.path.exists(data):
+        model.makeModelPrediction(data, training_set)
+        winAPI.WriteFile(fileHandle, bytes(data), 0)
+    else:
+        winAPI.WriteFile(fileHandle, b'Something went wrong!', 0)
