@@ -3,13 +3,14 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>50c738f3-a88a-48b5-a02f-a3b7c1b566d3</ProjectGuid>
-    <ProjectHome>.</ProjectHome>
-    <StartupFile>AnimalSpeciesClassifier.py</StartupFile>
+    <ProjectHome>
+    </ProjectHome>
+    <StartupFile>CNNLauncher.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>AnimalSpeciesClassifier</Name>
+    <Name>KerasConvNet</Name>
     <RootNamespace>AnimalSpeciesClassifier</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -21,7 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnimalSpeciesClassifier.py" />
+    <Compile Include="CNNLauncher.py" />
     <Compile Include="CNNClassifier.py">
       <SubType>Code</SubType>
     </Compile>
