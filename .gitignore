@@ -1,1 +1,4 @@
 AnimalSpeciesClassifier/AnimalSpeciesClassifier/__pycache__/
+AnimalSpeciesClassifier/.vs/
+AnimalSpeciesClassifier/ConvNetManager/bin/
+AnimalSpeciesClassifier/ConvNetManager/obj/
