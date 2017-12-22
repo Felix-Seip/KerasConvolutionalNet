@@ -57,11 +57,11 @@ class CNNClassifier(object):
         self.cnnModel.add(Dropout(rate = dropout))
 
 
-    def createOutputLayer(self, outputNeurons = 1, activationFunction = 'sigmoid'):
+    def createOutputLayer(self, outputNeurons = 1, activationFunction = 'softmax'):
         self.cnnModel.add(Dense(units = outputNeurons, activation = activationFunction))
 
 
-    def compile(self, modelOptimizer = 'adam', lossFunction = 'binary_crossentropy'):
+    def compile(self, modelOptimizer = 'adam', lossFunction = 'categorical_crossentropy'):
         self.cnnModel.compile(optimizer = modelOptimizer, loss = lossFunction, metrics = ['accuracy']) #change binary_crossentropy to categorical_crossentropy
 
 
@@ -73,12 +73,7 @@ class CNNClassifier(object):
         result = self.cnnModel.predict(test_image)
         training_set.class_indices
 
-        if result[0][0] == 1:
-            return 'dog'
-        else:
-            return 'cat'
-
-
+        print(result[i])
 
 
 
