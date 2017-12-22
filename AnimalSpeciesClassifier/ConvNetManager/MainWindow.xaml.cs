@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace ConvNetManager
@@ -21,13 +22,12 @@ namespace ConvNetManager
         public MainWindow()
         {
             InitializeComponent();
+
             StartConvNetScript();
-
             server = new NamedPipeServerStream("Demo");
-            server.WaitForConnection();
-
             stream = new MemoryStream();
             writer = new BinaryWriter(stream);
+            server.WaitForConnection();
         }
 
         private void StartConvNetScript()
@@ -88,9 +88,8 @@ namespace ConvNetManager
             byte[] responseBytes = new byte[1028];
             await server.ReadAsync(responseBytes, 0, responseBytes.Length);
             string responseString = Encoding.UTF8.GetString(responseBytes);
-
-            responseString = responseString.Substring(0, responseString.IndexOf("\0"));
-            input.Text = responseString;
+            string response = responseString.Substring(0, responseString.IndexOf("\0"));
+            input.Text = response;
         }
 
         private void Send_Btn_Click(object sender, RoutedEventArgs e)
