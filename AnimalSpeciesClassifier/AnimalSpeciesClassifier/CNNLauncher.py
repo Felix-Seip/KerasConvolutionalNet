@@ -2,7 +2,7 @@
 from keras.preprocessing.image import ImageDataGenerator
 from CNNClassifier import CNNClassifier
 from NNModelSaver import NNModelSaver
-import _winapi as winAPI
+from InterfaceConnectionManager import InterfaceConnectionManager
 import os
 import sys
 
@@ -12,9 +12,10 @@ imageHeight         = 100       #To be handled from interface
 imageWidth          = 100       #To be handled from interface
 numConvFilters      = 32        #To be handled from interface
 maxPoolingPoolSize  = (2, 2)    #To be handled from interface
+fileHandle          = None
 
-fileHandle = winAPI.CreateFile("\\\\.\\pipe\\Demo", winAPI.GENERIC_READ | winAPI.GENERIC_WRITE, 0, 0, winAPI.OPEN_EXISTING, 0, 0)
-winAPI.WriteFile(fileHandle, b'Status:Starting Network...', 0)
+fileHandle = InterfaceConnectionManager.initializeConnection()
+InterfaceConnectionManager.sendMessage(fileHandle, b'Status:Connected')
 
 #print('Would you like to load the model from a .h5 file? Y/N') #To be handled from interface
 loadFileAnswer = sys.argv[1] #input()
@@ -67,10 +68,10 @@ else:
 
 
 while True:
-    data = winAPI.ReadFile(fileHandle, 4096)
+    data = InterfaceConnectionManager.readMessage(fileHandle)
     print(data)
     #if os.path.exists(data):
     #    model.makeModelPrediction(data, training_set)
     #    winAPI.WriteFile(fileHandle, bytes(data), 0)
     #else:
-    winAPI.WriteFile(fileHandle, b'Hello World', 0)
+    InterfaceConnectionManager.sendMessage(fileHandle, b'Hello World')
