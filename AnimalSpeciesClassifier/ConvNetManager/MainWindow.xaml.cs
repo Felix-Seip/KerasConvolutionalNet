@@ -1,10 +1,8 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ConvNetManager
@@ -30,54 +28,14 @@ namespace ConvNetManager
         private void StartConvNetScript()
         {
             string curDir = Directory.GetCurrentDirectory();
-
-            int continueIndex = curDir.Length;
-            while (curDir.LastIndexOf(@"\", continueIndex) != 0)
-            {
-                int index = curDir.LastIndexOf(@"\", continueIndex);
-                if (curDir.Substring(index + 1, continueIndex - (index + 1)) == "AnimalSpeciesClassifier")
-                {
-                    break;
-                }
-
-                curDir = curDir.Substring(0, index);
-                continueIndex = index;
-            }
-
+            curDir = FileSystem.ReverseCD(curDir);
 
             ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = GetPythonExeLocation();
+            start.FileName = FileSystem.GetPythonExeLocation();
             start.Arguments = string.Format("{0} {1} {2} {3}", curDir + @"\AnimalSpeciesClassifier\CNNLauncher.py", "N", @"C:\Users\SeipF\Documents\pokemon_dataset\training", @"C:\Users\SeipF\Documents\pokemon_dataset\test");
             start.UseShellExecute = false;
             start.RedirectStandardOutput = false;
             Process process = Process.Start(start);
-        }
-
-        private string GetPythonExeLocation()
-        {
-            try
-            {
-                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Python\PythonCore\3.6\InstallPath"))
-                {
-                    if (key != null)
-                    {
-                        Object keyValue = key.GetValue("ExecutablePath");
-                        if (keyValue != null)
-                        {
-                            return keyValue.ToString();
-                        }
-                        else
-                        {
-                            throw new Exception("Couldnt find Python installation. Is it installed for this user?");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)  //just for demonstration...it's always best to handle specific exceptions
-            {
-                //react appropriately
-            }
-            return "";
         }
 
         private async void GetResponseAsync()
@@ -98,6 +56,7 @@ namespace ConvNetManager
             }
         }
 
+        //Use this to send a message to the script
         //writer.Write(input.Text);
         //server.Write(stream.ToArray(), 0, stream.ToArray().Length);
 
