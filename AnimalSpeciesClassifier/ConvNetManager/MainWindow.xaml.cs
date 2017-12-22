@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Text;
@@ -24,6 +25,17 @@ namespace ConvNetManager
 
             stream = new MemoryStream();
             writer = new BinaryWriter(stream);
+            StartConvNetScript();
+        }
+
+        private void StartConvNetScript()
+        {
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = "  my/full/path/to/python.exe";
+            start.Arguments = string.Format("{0} {1}", cmd, args);
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+            Process process = Process.Start(start);
         }
 
         private async void GetResponseAsync()
